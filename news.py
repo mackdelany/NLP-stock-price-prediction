@@ -1,8 +1,12 @@
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
+from pathlib import Path
 
-news = pd.read_csv('/data/train/RedditNews_train.csv')
+data_folder = Path('data/train/')
+file_to_open = data_folder / 'RedditNews_train.csv'
+
+news = pd.read_csv(file_to_open)
 
 # Drop NAs
 news.dropna(inplace=True)
@@ -23,4 +27,4 @@ news_vectors = vectorizer.fit_transform(corpus).toarray()
 news = pd.concat([news.Date, pd.DataFrame(news_vectors)], axis=1)
 
 # Export csv
-news.to_csv('processed_news.csv')
+news.to_csv('data-interim/text_features.csv',index=False)
