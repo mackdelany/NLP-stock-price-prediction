@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from pathlib import Path
 
 data_folder = Path('data/train/')
@@ -19,9 +19,9 @@ news['News'] = news['News'].apply(lambda x: x.lower())
 # Concat stories by day
 news = news.groupby(['Date'])['News'].apply(lambda x: ', '.join(x)).reset_index()
 
-# Import CountVectorizer
+# Import TfidfVectorizer
 # Note max features as a hyperparameter!!
-vectorizer = CountVectorizer(max_features=max_features)
+vectorizer = TfidfVectorizer(stop_words='english', max_features=200)
 corpus = news['News'].values
 news_vectors = vectorizer.fit_transform(corpus).toarray()
 
