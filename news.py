@@ -27,7 +27,7 @@ news_vectors = vectorizer.fit_transform(corpus).toarray()
 text_features = pd.DataFrame(data=news_vectors,columns=vectorizer.get_feature_names())
 
 # Concat vectors with dates
-text_features = pd.concat([pd.Series(news.Date.unique()).to_frame(), text_features], axis=1)
+text_features = pd.concat([pd.Series(news.Date.unique()).to_frame(name='Date'), text_features], axis=1)
 
 # Export csv
 text_features.to_csv('data-interim/text_features.csv',index=False)
