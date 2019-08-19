@@ -8,6 +8,8 @@ file_to_open = data_folder / 'RedditNews_train.csv'
 
 news = pd.read_csv(file_to_open)
 
+max_features = 200 # note this hyperparameter
+
 # Drop NAs
 news.dropna(inplace=True)
 
@@ -19,7 +21,7 @@ news = news.groupby(['Date'])['News'].apply(lambda x: ', '.join(x)).reset_index(
 
 # Import CountVectorizer
 # Note max features as a hyperparameter!!
-vectorizer = CountVectorizer(max_features=200)
+vectorizer = CountVectorizer(max_features=max_features)
 corpus = news['News'].values
 news_vectors = vectorizer.fit_transform(corpus).toarray()
 
