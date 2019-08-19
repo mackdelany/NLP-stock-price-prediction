@@ -24,9 +24,10 @@ news = news.groupby(['Date'])['News'].apply(lambda x: ', '.join(x)).reset_index(
 vectorizer = TfidfVectorizer(stop_words='english', max_features=200)
 corpus = news['News'].values
 news_vectors = vectorizer.fit_transform(corpus).toarray()
+text_features = pd.DataFrame(data=news_vectors,columns=vectorizer.get_feature_names())
 
 # Concat vectors with dates
-news = pd.concat([news.Date, pd.DataFrame(news_vectors)], axis=1)
+text_features = pd.concat([news.Date, text_features], axis=1)
 
 # Export csv
-news.to_csv('data-interim/text_features.csv',index=False)
+text_features.to_csv('data-interim/text_features.csv',index=False)
