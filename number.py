@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as  pd
 import numpy as np
 from scipy import stats
@@ -18,10 +20,14 @@ def fix_empty(df1, df2):
 
 
 # load data
+data_folder = Path('data/train')
+text_file_path = data_folder / 'DJIA_table_train.csv'
+DJ_df = pd.read_csv(text_file_path, parse_dates=True)
+
 filename = "DJIA_table_train.csv"
 mydir = mydir = "/home/edith/Documents/DSR/mincomp2/minicomp-news-stock-prices/data/NLP-stock-price-prediction/data/train/"
-DJ_df = pd.read_csv(mydir+filename, parse_dates=True)
-mydir = "/home/edith/Documents/DSR/mincomp2/minicomp-news-stock-prices/data/NLP-stock-price-prediction/data/interim/"
+DJ_df = pd.read_csv(text_file_path, parse_dates=True)
+mydir = './data/interim/'
 
 # clean correlated values: open,high,close,lose and Adj_close
 cols = ["Open","High","Low","Close","Adj Close"]
@@ -90,4 +96,4 @@ b = pca.transform(DJ_df.loc[:, ["Open","High","Low","Close","Volume","Adj Close"
 DJ_df["1st_PC"] = b[:,0]
 DJ_df["2nd_PC"] = b[:,1]
 
-DJ_df.to_csv(mydir+"clean_DJIA.csv")
+DJ_df.drop('label',axis=1).to_csv(mydir+"clean_DJIA.csv", index=False)
