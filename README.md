@@ -1,9 +1,20 @@
 # NLP-stock-price-prediction
-Using real world news to predict whether markets will go up or down
 
+This package uses natural language processing and real world news to predict whether stock markets will go up or down. 
 
+Team members:
+* [Catarina Ferreira](https://github.com/Naycat)
+* [Edith Chorev](https://github.com/EdithChorev)
+* [Adam Green](https://github.com/ADGEfficiency)
+* [Mack Delany](https://github.com/mackdelany)
 
+## Data
 
+The dataset was taken from the Kaggle competition [Daily News for Stock Market Prediction](https://www.kaggle.com/aaron7sun/stocknews/).
+
+The dataset is from two sources:
+- the r/worldnews Reddit - the top 25 headlines ranked by upvotes
+- Yahoo Finance
 ......................................
 
 
@@ -28,13 +39,7 @@ from sklearn.metrics import roc_auc_score
 metric = roc_auc_score(y_true, y_score)
 ```
 
-## Data
 
-This dataset was taken from the Kaggle competition [Daily News for Stock Market Prediction](https://www.kaggle.com/aaron7sun/stocknews/).
-
-The dataset is from two sources:
-- the r/worldnews Reddit - the top 25 headlines ranked by upvotes
-- Yahoo Finance
 
 The data is supplied as three csvs.  The raw data is in `./data/stocknews.zip`.  Run the commands below to unzip it into the correct place, and to generate the training set (you will need `pandas` and `numpy` to do this):
 
