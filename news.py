@@ -36,7 +36,7 @@ def lemmatize_sentence(sentence):
     return " ".join(res_words)
 
 
-def process_text_features(filepath, max_features=200, create_csv=True, return_frame=True, csv_directory='./data/interim', csv_path='data/interim/text_features.csv', dict_path='data/interim/text_features_dict.txt'):
+def process_text_features(filepath, max_features=10000, create_csv=True, return_frame=True, csv_directory='./data/interim', csv_path='data/interim/text_features.csv', dict_path='data/interim/text_features_dict.txt'):
     
     # Read data, drop NAs and transform to lower case
     news = pd.read_csv(filepath)
