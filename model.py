@@ -17,11 +17,22 @@ data = text.merge(labels, how='inner', left_on='Date', right_on='Date')\
     .merge(numbers, how='inner', left_on='Date', right_on='Date')
 
 data = data.dropna()
+
+data['Date'] = pd.to_datetime(data['Date'])
+data['dayofweek'] = data.Date.dt.dayofweek
+data['dayofmonth'] = data.Date.dt.day
+data['monthofyear'] = data.Date.dt.month
+
 data = data.drop('Date', axis=1)
 data = data.drop(['Open','High','Low','Close','Volume','Adj Close', 'Lag_Vol'], axis=1)
 
 scaler = MinMaxScaler()
 data['1st_PC'] = scaler.fit_transform(data['1st_PC'].values.reshape(-1,1))
 data['2nd_PC'] = scaler.fit_transform(data['2nd_PC'].values.reshape(-1,1))
+data['dayofweek'] = scaler.fit_transform(data['dayofweek'].values.reshape(-1,1))
+data['dayofmonth'] = scaler.fit_transform(data['dayofmonth'].values.reshape(-1,1))
+data['monthofyear'] = scaler.fit_transform(data['monthofyear'].values.reshape(-1,1))
 
-data.to_csv('final_data.csv', index=False)
+print(data.head())
+
+data.to_csv('data/final_data.csv', index=False)
