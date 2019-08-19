@@ -4,7 +4,7 @@ Using real world news to predict whether markets will go up or down
 
 
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+......................................
 
 
 
