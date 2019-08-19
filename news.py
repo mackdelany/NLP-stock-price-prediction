@@ -3,8 +3,10 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
+import nltk
+from nltk.corpus import wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def nltk2wn_tag(nltk_tag):
@@ -21,6 +23,7 @@ def nltk2wn_tag(nltk_tag):
 
 
 def lemmatize_sentence(sentence):
+    lmtzr = WordNetLemmatizer()
     nltk_tagged = nltk.pos_tag(nltk.word_tokenize(sentence))
     wn_tagged = map(lambda x: (x[0], nltk2wn_tag(x[1])), nltk_tagged)
     res_words = []
@@ -44,7 +47,6 @@ def process_text_features(filepath, max_features=200, create_csv=True, return_fr
     news = news.groupby(['Date'])['News'].apply(lambda x: ', '.join(x)).reset_index()
 
     # Lemmatize words
-    lmtzr = WordNetLemmatizer()
     news['News'] = news['News'].apply(lemmatize_sentence)
 
     # Extract tfid Vectorizer features
