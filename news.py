@@ -7,6 +7,7 @@ import nltk
 from nltk.corpus import wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from textblob import TextBlob
 
 
 def nltk2wn_tag(nltk_tag):
@@ -36,6 +37,14 @@ def lemmatize_sentence(sentence):
     return " ".join(res_words)
 
 
+def sentiment(row):
+    return TextBlob(row).sentiment.polarity
+
+
+def subjectivity(row):
+    return TextBlob(row).sentiment.subjectivity
+
+
 def process_text_features(filepath, max_features=20000, create_csv=True, return_frame=True, csv_directory='./data/interim', csv_path='data/interim/text_features.csv', dict_path='data/interim/text_features_dict.txt'):
     
     # Read data, drop NAs and transform to lower case
@@ -46,6 +55,10 @@ def process_text_features(filepath, max_features=20000, create_csv=True, return_
     # Concatenate stories and group by date
     news = news.groupby(['Date'])['News'].apply(lambda x: ', '.join(x)).reset_index()
 
+    # Add sentiment and subjectivity
+    news['sentiment'] = news['News'].apply(sentiment)
+    news['subjectivity'] = news['News'].apply(subjectivity)
+
     # Lemmatize words
     news['News'] = news['News'].apply(lemmatize_sentence)
 
@@ -55,7 +68,7 @@ def process_text_features(filepath, max_features=20000, create_csv=True, return_
     text_features = pd.DataFrame(data=news_vectors, columns=vectorizer.get_feature_names())
 
     # Concat dates with tfid features
-    text_features = pd.concat([pd.Series(news.Date.unique()).to_frame(name='Date'), text_features], axis=1)
+    text_features = pd.concat([news[['sentiment','subjectivity']],pd.Series(news.Date.unique()).to_frame(name='Date'), text_features], axis=1)
 
     if create_csv == True:
         os.makedirs(csv_directory, exist_ok=True)
