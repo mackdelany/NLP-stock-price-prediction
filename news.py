@@ -69,6 +69,7 @@ def process_text_features(filepath, max_features=20000, create_csv=True, return_
 
     # Concat dates with tfid features
     text_features = pd.concat([news[['sentiment','subjectivity']],pd.Series(news.Date.unique()).to_frame(name='Date'), text_features], axis=1)
+    print(text_features[['sentiment','subjectivity']].head())
 
     if create_csv == True:
         os.makedirs(csv_directory, exist_ok=True)
