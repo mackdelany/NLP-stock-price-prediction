@@ -1,11 +1,10 @@
-from pathlib import Path
-
 import pandas as  pd
 import numpy as np
 from scipy import stats
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 from sklearn.decomposition import PCA
+
 
 def fix_empty(df1, df2):
     f1_index = df1.index[df1.apply(np.isfinite)].to_list()
@@ -20,14 +19,13 @@ def fix_empty(df1, df2):
 
 
 # load data
-data_folder = Path('data/train')
-text_file_path = data_folder / 'DJIA_table_train.csv'
-DJ_df = pd.read_csv(text_file_path, parse_dates=True)
 
+
+current_dir = '/home/edith/Documents/DSR/mincomp2/minicomp-news-stock-prices/data/NLP-stock-price-prediction'
 filename = "DJIA_table_train.csv"
-mydir = mydir = "/home/edith/Documents/DSR/mincomp2/minicomp-news-stock-prices/data/NLP-stock-price-prediction/data/train/"
-DJ_df = pd.read_csv(text_file_path, parse_dates=True)
-mydir = './data/interim/'
+mydir = current_dir +  "/data/train/"
+DJ_df = pd.read_csv(mydir+filename, parse_dates=True)
+mydir = current_dir +"/data/interim/"
 
 # clean correlated values: open,high,close,lose and Adj_close
 cols = ["Open","High","Low","Close","Adj Close"]
@@ -82,6 +80,16 @@ regr.fit(X_train, y_train)
 yhat = regr.predict(X_val)
 DJ_df.loc[test_idx, "Volume"] = yhat
 
+# feature eng. lagged Adj Close- Open
+a=DJ_df["Adj Close"]#.rolling(5, win_type='boxcar').mean()
+b=DJ_df["Adj Close"].shift(1)#.rolling(5, win_type='boxcar').mean()#.rolling(5, win_type='boxcar').mean()
+a=b-a # close -close day before
+a[0]=a[1]
+DJ_df["Laged_Adj_Diff"]=a
+
+
+
+#more changes
 # make labels
 a = DJ_df["Adj Close"] - DJ_df["Adj Close"].shift(1)
 a[a>=0] = 1
@@ -91,9 +99,9 @@ DJ_df.label = a
 
 # PCA to reduce dimentionality 
 pca = PCA(n_components=2)
-pca.fit(DJ_df.loc[:,["Open","High","Low","Close","Volume","Adj Close","Lag_Vol"]])
-b = pca.transform(DJ_df.loc[:, ["Open","High","Low","Close","Volume","Adj Close","Lag_Vol"]])
+pca.fit(DJ_df.loc[:,["Open","High","Low","Close","Volume","Adj Close","Lag_Vol","Laged_Adj_Diff"]])
+b = pca.transform(DJ_df.loc[:, ["Open","High","Low","Close","Volume","Adj Close","Lag_Vol","Laged_Adj_Diff"]])
 DJ_df["1st_PC"] = b[:,0]
 DJ_df["2nd_PC"] = b[:,1]
-
-DJ_df.drop('label',axis=1).to_csv(mydir+"clean_DJIA.csv", index=False)
+print(DJ_df.isnull().any())
+DJ_df.to_csv(mydir+"clean_DJIA.csv")
