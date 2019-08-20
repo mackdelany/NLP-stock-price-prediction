@@ -1,6 +1,6 @@
 # NLP-stock-price-prediction
 
-This package uses natural language processing and real world news to predict whether stock markets will go up or down. 
+This package applies natural language processing on real world news to predict whether stock markets will go up or down. 
 
 Team members:
 * [Catarina Ferreira](https://github.com/Naycat)
