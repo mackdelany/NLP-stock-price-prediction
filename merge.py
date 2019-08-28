@@ -33,6 +33,4 @@ data['dayofweek'] = scaler.fit_transform(data['dayofweek'].values.reshape(-1,1))
 data['dayofmonth'] = scaler.fit_transform(data['dayofmonth'].values.reshape(-1,1))
 data['monthofyear'] = scaler.fit_transform(data['monthofyear'].values.reshape(-1,1))
 
-print(data.head())
-
 data.to_csv('data/final_data.csv', index=False)
