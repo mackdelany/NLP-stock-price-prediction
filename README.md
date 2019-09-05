@@ -6,7 +6,7 @@ This package applies natural language processing on real world news to predict w
 
 The dataset was taken retrieved from the Kaggle competition [Daily News for Stock Market Prediction](https://www.kaggle.com/aaron7sun/stocknews/) on August 19th, 2019.
 
-The dataset is from two sources:
+There are two sources of data:
 - the r/worldnews Reddit - the top 25 headlines ranked by upvotes
 - Yahoo Finance
 
@@ -20,7 +20,7 @@ The model was found to have ~95% accuracy when analyzing news from the same day.
 
 ## Architecture
 
-The majority of the model accuracy can be attributed to the NLP processing of r/worldnews. Lemmatizing was used on a feature set of 20,000 words, accuracy was seen to improve dramatically with word count.
+The majority of model accuracy can be attributed to NLP processing of r/worldnews. Lemmatizing was used on a feature set of 20,000 words, accuracy was seen to improve dramatically with word count.
 
 Analysis of text sentiment and subjectivity also contributed positively. Interpolation and Principal Component Analysis were both found to be useful when cleaning and engineering the Yahoo Finance dataset.
 
